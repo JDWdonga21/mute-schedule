@@ -6,16 +6,36 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { addMonths, subMonths, format } from 'date-fns';
+import { Event } from './types'; // 이벤트 타입 정의가 포함된 파일
+
+interface CalendarEvents {
+    // id: number;
+    // created_at: string;
+    // updated_at: string;
+    // user_uuid: string;
+    // type: string;
+    // start_date: string;
+    // end_date: string | null;
+    // reason: string;
+    // description: string;
+    // status: number;
+    // create_user_uuid: string;
+    title: string;
+    start: string;
+    end: string | null;
+}
 
 interface DateCalendarReferenceDateState {
   referenceDate: Dayjs;
   displayedMonth: Dayjs;
   selectedDate: Dayjs | null;
+  events: CalendarEvents[];
 }
 
 interface DateCalendarProps {
   open: boolean;
   onClose: () => void;
+  events: Event[];
 }
 
 // Augment the palette to include a salmon color
@@ -56,6 +76,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
       referenceDate: dayjs(),
       displayedMonth: dayjs(),
       selectedDate: null,
+      events: []
     };
   }
 
@@ -176,6 +197,11 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 select={this.handleDateSelect}
                 height="100%"
                 events={[
+                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
+                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
+                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
+                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
+                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
                   { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
                   { title: 'Some Event', start: '2024-05-09' },
                   // Add more events here

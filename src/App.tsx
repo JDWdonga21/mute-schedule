@@ -146,7 +146,7 @@ class App extends React.Component<{}, AppState> {
               backgroundColor: 'background.paper',
               padding: 2,
             }}>
-              <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} />
+              <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} events={sampleData}/>
             </Box>
           </Modal>
           {/* 모달 설정 우측 리스트 */}
