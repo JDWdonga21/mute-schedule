@@ -82,9 +82,9 @@ class EventModal extends Component<EventModalProps, EventModalState> {
                 {filteredEvents.map(event => (
                     <Card variant="outlined" sx={{ display: 'flex', marginBottom: 1, boxShadow: 3, alignItems: 'center'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
-                            <CardContent sx={{ flex: '1 0 auto' }}>
-                                <Typography component="div" fontWeight={900} variant="h5">
-                                    {"김복순"}
+                            <CardContent sx={{flex: '1 0 auto' }}>
+                                <Typography component="div" fontWeight={900} fontSize={15} sx={{maxWidth: 150}}>
+                                    {`${event.user_uuid}`}
                                 </Typography>
                                 <Typography variant="subtitle1" fontSize={13} component="div">
                                     {"+82 1055359909"}
