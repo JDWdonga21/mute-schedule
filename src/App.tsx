@@ -146,9 +146,7 @@ class App extends React.Component<{}, AppState> {
               backgroundColor: 'background.paper',
               padding: 2,
             }}>
-              
               <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} />
-              {/* <Button onClick={this.handleCloseModalL} sx={{ alignSelf: 'flex-end' }}>닫기</Button> */}
             </Box>
           </Modal>
           {/* 모달 설정 우측 리스트 */}
@@ -176,7 +174,6 @@ class App extends React.Component<{}, AppState> {
               backgroundColor: 'background.paper',
               padding: 2,
             }}>
-              {/* <Button onClick={this.handleCloseModalR} sx={{ alignSelf: 'flex-end' }}>닫기</Button> */}
               <EventModal
                 open={this.state.isModalOpenR}
                 onClose={this.handleCloseModalR}

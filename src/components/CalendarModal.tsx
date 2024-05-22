@@ -94,20 +94,20 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     const { open, onClose } = this.props;
 
     return (
-      <Modal
-        open={open}
-        onClose={(event, reason) => {
-          if (reason !== 'backdropClick') {
-            onClose();
-          }
-        }}
-      >
+        <Modal
+            open={open}
+            onClose={(event, reason) => {
+            if (reason !== 'backdropClick') {
+                onClose();
+            }
+            }}
+        >
         <ThemeProvider theme={theme}>
           <Box
             sx={{
               position: 'absolute',
               top: '50%',
-              left: '25%',
+              left: '35%',
               transform: 'translate(-50%, -50%)',
               width: '60vw',
               height: '60vh',
