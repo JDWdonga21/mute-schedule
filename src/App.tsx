@@ -4,6 +4,11 @@ import './App.css';
 
 // components, modals
 import Header from './components/Header';
+import CalendarModal from './components/CalendarModal';
+import EventModal from './components/EventModal';
+
+//데이터
+import sampleData from './data/data.json';
 
 // mui
 import TextField from '@mui/material/TextField';
@@ -131,7 +136,7 @@ class App extends React.Component<{}, AppState> {
             }'
             variant="filled"
           />
-          <MuteButton variant="contained">예외 입력</MuteButton>
+          <MuteButton variant="contained" onClick={this.handleOpenModal}>예외 입력(모달 발생 버튼)</MuteButton>
         </Box>
         {/* 모달 설정 좌측 달력*/}
         <Modal
@@ -144,7 +149,7 @@ class App extends React.Component<{}, AppState> {
             <Box sx={{ 
               position: 'absolute',
               top: '50%',
-              left: '50%',
+              left: '25%',
               transform: 'translate(-50%, -50%)',
               display: 'flex',
               alignItems: 'center',
@@ -153,21 +158,7 @@ class App extends React.Component<{}, AppState> {
               border: '2px solid #000000',
               zIndex: 1
             }}>
-              {/* {currentScreen === 'edit' && (
-                <NoticeEdit 
-                  id={selectedNoticeId}
-                  onNoticeAdded = {this.handleNoticeAdded}  
-                  onCancel={this.handleNoticeAdded}        
-                />
-              )}
-              {currentScreen === 'detail' && selectedNoticeId && (
-                <NoticeDetail 
-                  id={selectedNoticeId} 
-                  onBackToList={this.handleBackToList}
-                  onEditNotice={() => this.handleEditNotice(selectedNoticeId)}
-                  onDelete={this.handleDeleteNotice}
-                />
-              )} */}
+              <CalendarModal/>
             </Box>
         </Modal>
         {/* 모달 설정 우측 리스트 */}
@@ -181,7 +172,7 @@ class App extends React.Component<{}, AppState> {
             <Box sx={{ 
               position: 'absolute',
               top: '50%',
-              left: '50%',
+              left: '75%',
               transform: 'translate(-50%, -50%)',
               display: 'flex',
               alignItems: 'center',
@@ -190,21 +181,12 @@ class App extends React.Component<{}, AppState> {
               border: '2px solid #000000',
               zIndex: 1
             }}>
-              {/* {currentScreen === 'edit' && (
-                <NoticeEdit 
-                  id={selectedNoticeId}
-                  onNoticeAdded = {this.handleNoticeAdded}  
-                  onCancel={this.handleNoticeAdded}        
-                />
-              )}
-              {currentScreen === 'detail' && selectedNoticeId && (
-                <NoticeDetail 
-                  id={selectedNoticeId} 
-                  onBackToList={this.handleBackToList}
-                  onEditNotice={() => this.handleEditNotice(selectedNoticeId)}
-                  onDelete={this.handleDeleteNotice}
-                />
-              )} */}
+              <EventModal
+                open={this.state.isModalOpenR}
+                onClose={this.handleCloseModalR}
+                events={sampleData}
+                selectedDate={new Date()} // 예제에서는 단순히 현재 날짜를 전달합니다.
+              />
             </Box>
           </Modal>
       </Container>            
