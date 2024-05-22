@@ -121,7 +121,7 @@ class App extends React.Component<{}, AppState> {
         </div>
 
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1}}>
-          {/* 모달 설정 좌측 달력 */}
+          {/* 모달 */}
           <Modal
             open={this.state.isModalOpenL}
             onClose={(event, reason) => {
@@ -132,10 +132,11 @@ class App extends React.Component<{}, AppState> {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
+            
             <Box sx={{ 
               position: 'absolute',
               top: '50%',
-              left: '25%',
+              left: '50%',
               transform: 'translate(-50%, -50%)',
               display: 'flex',
               flexDirection: 'column',
@@ -146,40 +147,19 @@ class App extends React.Component<{}, AppState> {
               backgroundColor: 'background.paper',
               padding: 2,
             }}>
-              <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} events={sampleData}/>
-            </Box>
-          </Modal>
-          {/* 모달 설정 우측 리스트 */}
-          <Modal
-            open={this.state.isModalOpenR}
-            onClose={(event, reason) => {
-              if (reason !== 'backdropClick') {
-                this.handleCloseModalR();
-              }
-            }}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={{ 
-              position: 'absolute',
-              top: '50%',
-              left: '75%',
-              transform: 'translate(-50%, -50%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '2px solid #000000',
-              zIndex: 1,
-              backgroundColor: 'background.paper',
-              padding: 2,
-            }}>
-              <EventModal
+              {/* 모달 설정 좌측 리스트 */}
+              {this.state.isModalOpenL && (
+                <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} events={sampleData}/>
+              )}              
+              {/* 모달 설정 우측 리스트 */}
+              {this.state.isModalOpenR &&(
+                <EventModal
                 open={this.state.isModalOpenR}
                 onClose={this.handleCloseModalR}
                 events={sampleData}
                 selectedDate={new Date()} // 예제에서는 단순히 현재 날짜를 전달합니다.
               />
+              )}              
             </Box>
           </Modal>
         </div>
