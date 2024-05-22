@@ -1,19 +1,16 @@
 import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { Box, Button, Modal, AppBar, Toolbar, Typography, createTheme, ThemeProvider } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { addMonths, subMonths, format } from 'date-fns';
 import CloseIcon from '@mui/icons-material/Close';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-
+import { addMonths, subMonths, format } from 'date-fns';
 
 interface DateCalendarReferenceDateState {
   referenceDate: Dayjs;
   displayedMonth: Dayjs;
+  selectedDate: Dayjs | null;
 }
 
 interface DateCalendarProps {
@@ -51,11 +48,14 @@ const theme = createTheme({
 });
 
 class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateCalendarReferenceDateState> {
+  calendarRef = React.createRef<FullCalendar>();
+
   constructor(props: DateCalendarProps) {
     super(props);
     this.state = {
       referenceDate: dayjs(),
       displayedMonth: dayjs(),
+      selectedDate: null,
     };
   }
 
@@ -64,6 +64,8 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
       displayedMonth: dayjs(subMonths(prevState.displayedMonth.toDate(), 1)),
       referenceDate: dayjs(subMonths(prevState.referenceDate.toDate(), 1)),
     }));
+    const calendarApi = this.calendarRef.current?.getApi();
+    calendarApi?.prev();
   };
 
   handleNextMonth = () => {
@@ -71,11 +73,20 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
       displayedMonth: dayjs(addMonths(prevState.displayedMonth.toDate(), 1)),
       referenceDate: dayjs(addMonths(prevState.referenceDate.toDate(), 1)),
     }));
+    const calendarApi = this.calendarRef.current?.getApi();
+    calendarApi?.next();
   };
 
   handleToday = () => {
     const today = dayjs();
     this.setState({ displayedMonth: today, referenceDate: today });
+    const calendarApi = this.calendarRef.current?.getApi();
+    calendarApi?.today();
+  };
+
+  handleDateSelect = (selectInfo: any) => {
+    this.setState({ selectedDate: dayjs(selectInfo.start) });
+    alert(`Selected date: ${selectInfo.startStr}`);
   };
 
   render() {
@@ -83,12 +94,12 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     const { open, onClose } = this.props;
 
     return (
-      <Modal 
-        open={open} 
+      <Modal
+        open={open}
         onClose={(event, reason) => {
-            if (reason !== 'backdropClick') {
-              onClose();
-            }
+          if (reason !== 'backdropClick') {
+            onClose();
+          }
         }}
       >
         <ThemeProvider theme={theme}>
@@ -98,10 +109,10 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               top: '50%',
               left: '25%',
               transform: 'translate(-50%, -50%)',
-              width: 800,
+              width: '60vw',
+              height: '60vh',
               bgcolor: 'background.paper',
               boxShadow: 24,
-              p: 4,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -128,7 +139,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginLeft: 3, marginTop: 1, marginBottom: 1 }}>
                   관제 예외일정
                 </Typography>
-                <div onClick={onClose}>
+                <div onClick={onClose} style={{ cursor: 'pointer' }}>
                   <CloseIcon />
                 </div>
               </Toolbar>
@@ -148,19 +159,29 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                   다음
                 </Button>
               </Box>
-              <Box sx={{marginLeft: '-10%', alignItems: 'center', justifyContent: 'end' }}>
+              <Box sx={{ marginLeft: '-10%', alignItems: 'center', justifyContent: 'end' }}>
                 <Button variant="contained" color="salmon" onClick={this.handleToday}>
-                    오늘
+                  오늘
                 </Button>
-              </Box>              
+              </Box>
             </Box>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateCalendar
-                value={referenceDate}
-                onChange={(date) => this.setState({ referenceDate: date || dayjs() })}
-                views={['year', 'month', 'day']}
+
+            <Box sx={{ width: '100%', height: '75vh' }}>
+              <FullCalendar
+                ref={this.calendarRef}
+                plugins={[dayGridPlugin, interactionPlugin]}
+                initialView="dayGridMonth"
+                headerToolbar={false}
+                selectable={true}
+                select={this.handleDateSelect}
+                height="100%"
+                events={[
+                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
+                  { title: 'Some Event', start: '2024-05-09' },
+                  // Add more events here
+                ]}
               />
-            </LocalizationProvider>
+            </Box>
           </Box>
         </ThemeProvider>
       </Modal>
