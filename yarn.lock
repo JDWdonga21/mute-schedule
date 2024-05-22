@@ -1451,6 +1451,28 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.2.tgz#d8bae93ac8b815b2bd7a98078cf91e2724ef11e5"
   integrity sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==
 
+"@fullcalendar/core@^6.1.12":
+  version "6.1.12"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-6.1.12.tgz#61f670d12d02ac7ec6da45cd64403c28d0d199dd"
+  integrity sha512-SgAtMnpYSqypjYJyiSuEk17rrznTHYrBvHiDEPSe5KKMiiLgpzlNKrNCqymHDrazHtihrxmeAjIS7kk5bIx/EQ==
+  dependencies:
+    preact "~10.12.1"
+
+"@fullcalendar/daygrid@^6.1.12":
+  version "6.1.12"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-6.1.12.tgz#423c1ed0e57a238582c0280da2a83ea280891c21"
+  integrity sha512-SB8owl0jMz3NwRydD+Xo6QCmg8F6wRLr1XuGbGNLtlpCE44jbwNNT2ws9IVGbbAB1duLkvE49g/yYs/cpY4HKA==
+
+"@fullcalendar/interaction@^6.1.12":
+  version "6.1.12"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/interaction/-/interaction-6.1.12.tgz#99be5c18e1bd886fa98e160abd925166500035cf"
+  integrity sha512-HgNQwTmb6R62wPtrBzOVPo5C8eWHgfSyU+tf6f317jf+x+V0T5mMesNSe42LC7M+8t9ipFHZDyRY+2Da9fu0/Q==
+
+"@fullcalendar/react@^6.1.12":
+  version "6.1.12"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/react/-/react-6.1.12.tgz#ed3766e9f22b0c9d5368fa76a4ae5a9df800c248"
+  integrity sha512-NrcjyzsGMGJidpHNbepR0DjpAPuTfeWVsew06l5Jmg92MNcIs6BCe94E+JtwTzMCKvMBmxiGv2HE/sQ7gdnSyQ==
+
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.14.tgz#d78e481a039f7566ecc9660b4ea7fe6b1fec442b"
@@ -8034,6 +8056,11 @@ postcss@^8.3.5, postcss@^8.4.23, postcss@^8.4.33, postcss@^8.4.4:
     nanoid "^3.3.7"
     picocolors "^1.0.0"
     source-map-js "^1.2.0"
+
+preact@~10.12.1:
+  version "10.12.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.12.1.tgz#8f9cb5442f560e532729b7d23d42fd1161354a21"
+  integrity sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==
 
 prelude-ls@^1.2.1:
   version "1.2.1"

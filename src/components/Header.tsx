@@ -10,7 +10,7 @@ class Header extends React.Component<{},{}>{
     render(): React.ReactNode {
         return(
           <AppBar
-            // position="static"
+            position="static"
             color="default"
             elevation={0} 
             sx={{
