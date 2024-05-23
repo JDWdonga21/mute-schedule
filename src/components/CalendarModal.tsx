@@ -81,12 +81,13 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
 
   componentDidUpdate(prevProps: DateCalendarProps) {
     if (prevProps.events !== this.props.events) {
+      console.log('Updated events:', this.props.events);
       this.setState({ calenderEvents: this.convertEventsToCalendarEvents(this.props.events) });
     }
   }
 
   convertEventsToCalendarEvents(events: Event[]): CalendarEvents[] {
-    console.log(events, "전달된 값")
+    console.log(events, "전달된 값");
     return events.map(event => ({
       title: event.reason,
       start: event.start_date,
@@ -118,7 +119,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     const calendarApi = this.calendarRef.current?.getApi();
     calendarApi?.today();
   };
-  //달력 일자 선택 이벤트
+
   handleDateSelect = (selectInfo: any) => {
     this.setState({ selectedDate: dayjs(selectInfo.start) });
     if(!this.props.isModalOpenR){
@@ -127,16 +128,21 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     alert(`Selected date: ${selectInfo.startStr}`);
   };
 
-  //선택된 날짜에 해당하는 이벤트 필터링
   getFilteredEvents = (): Event[] => {
     const { events } = this.props;
     const { selectedDate } = this.state;
     return events.filter(event => {
       const startDate = dayjs(event.start_date);
-      const endDate = event.end_date ? dayjs(event.end_date) : dayjs(event.start_date);
-      return startDate.isSameOrBefore(selectedDate) && endDate.isSameOrAfter(selectedDate);
+      const endDate = event.end_date ? dayjs(event.end_date) : startDate;
+  
+      return (
+        startDate.isSameOrBefore(selectedDate, 'day') && 
+        endDate.isSameOrAfter(selectedDate, 'day')
+      ) || 
+      startDate.isSame(selectedDate, 'day');
     });
   }
+  
 
   render() {
     const { referenceDate, displayedMonth, selectedDate } = this.state;
@@ -145,11 +151,6 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     return (
         <Modal
             open={open}
-            // onClose={(event, reason) => {
-            // if (reason !== 'backdropClick') {
-            //     onClose();
-            // }
-            // }}
             hideBackdrop
         >
         <ThemeProvider theme={theme}>
@@ -264,7 +265,6 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
             >
                 <Toolbar>
                     <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginLeft: 3, marginTop: 1, marginBottom: 1 }}>
-                        {/* {selectedDate.toLocaleDateString()} */}
                         {format(selectedDate.toDate(), 'yyyy.MM.dd')}
                     </Typography>
                     <div onClick={onCloseR} style={{ cursor: 'pointer' }}>
@@ -274,7 +274,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
             </AppBar>
             <Box sx={{ flexGrow: 1, overflow: 'auto', marginTop: '7vh', width: '100%', mb: 2, paddingRight: 1 }}>
                 {filteredEvents.map(event => (
-                    <Card variant="outlined" sx={{ display: 'flex', marginBottom: 1, boxShadow: 3, alignItems: 'center'}}>
+                    <Card key={event.id} variant="outlined" sx={{ display: 'flex', marginBottom: 1, boxShadow: 3, alignItems: 'center'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
                             <CardContent sx={{flex: '1 0 auto' }}>
                                 <Typography component="div" fontWeight={900} fontSize={15} sx={{maxWidth: 150}}>
