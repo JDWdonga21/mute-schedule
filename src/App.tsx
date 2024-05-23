@@ -54,6 +54,12 @@ class App extends React.Component<{}, AppState> {
     });
   };
 
+  handleOpenModalR = () => {
+    this.setState({ 
+      isModalOpenR: true,
+    });
+  };
+
   handleCloseModalL = () => {
     this.setState({ 
       isModalOpenL: false,
@@ -129,6 +135,7 @@ class App extends React.Component<{}, AppState> {
                 this.handleCloseModalL();
               }
             }}
+            // hideBackdrop
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
@@ -147,19 +154,19 @@ class App extends React.Component<{}, AppState> {
               backgroundColor: 'background.paper',
               padding: 2,
             }}>
-              {/* 모달 설정 좌측 리스트 */}
+              {/* 모달 설정 좌측 캘린더, 우측 리스트 */}
               {this.state.isModalOpenL && (
-                <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} events={sampleData}/>
+                <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} isModalOpenR={this.state.isModalOpenR} onOpenR={this.handleOpenModalR} onCloseR={this.handleCloseModalR} events={sampleData} />
               )}              
               {/* 모달 설정 우측 리스트 */}
-              {this.state.isModalOpenR &&(
+              {/* {this.state.isModalOpenR &&(
                 <EventModal
                 open={this.state.isModalOpenR}
                 onClose={this.handleCloseModalR}
                 events={sampleData}
                 selectedDate={new Date()} // 예제에서는 단순히 현재 날짜를 전달합니다.
               />
-              )}              
+              )}               */}
             </Box>
           </Modal>
         </div>

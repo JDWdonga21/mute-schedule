@@ -32,11 +32,12 @@ class EventModal extends Component<EventModalProps, EventModalState> {
     return (
       <Modal 
         open={open} 
-        onClose={(event, reason) => {
-            if (reason !== 'backdropClick') {
-              onClose();
-            }
-        }}      
+        // onClose={(event, reason) => {
+        //     if (reason !== 'backdropClick') {
+        //       onClose();
+        //     }
+        // }}    
+        hideBackdrop 
       >
         <Box 
             sx={{ 
