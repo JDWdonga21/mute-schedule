@@ -115,6 +115,9 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
 
   handleToday = () => {
     const today = dayjs();
+    if(!this.props.isModalOpenR){
+      this.props.onOpenR();
+    }
     this.setState({ displayedMonth: today, referenceDate: today, selectedDate: today });
     const calendarApi = this.calendarRef.current?.getApi();
     calendarApi?.today();

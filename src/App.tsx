@@ -152,7 +152,7 @@ class App extends React.Component<{}, AppState> {
               alignItems: 'center',
               justifyContent: 'center',
               position: 'fixed',
-              top: '10vh',
+              top: '11vh',
             }}
           >
             <TextField
@@ -163,19 +163,21 @@ class App extends React.Component<{}, AppState> {
               fullWidth
               value={this.state.jsonInput}
               onChange={this.handleInputChange}
-              placeholder='{
-                "id": 109,
-                "created_at": "2024-05-21 07:34:09",
-                "updated_at": "2024-05-21 07:34:16",
-                "user_uuid": "0x4E93587B95E24DC1B59DF34C5509D7F3",
-                "type": "LA_DOOR_CLOSED",
-                "start_date": "2024-05-16 15:00:00",
-                "end_date": "2024-05-17 15:00:00",
-                "reason": "외출",
-                "description": "",
-                "status": 1,
-                "create_user_uuid": "0x4E93587B95E24DC1B59DF34C5509D7F3"
-              }'
+              placeholder='[
+                {
+                  "id": 109,
+                  "created_at": "2024-05-21 07:34:09",
+                  "updated_at": "2024-05-21 07:34:16",
+                  "user_uuid": "0x4E93587B95E24DC1B59DF34C5509D7F3",
+                  "type": "LA_DOOR_CLOSED",
+                  "start_date": "2024-05-16 15:00:00",
+                  "end_date": "2024-05-17 15:00:00",
+                  "reason": "외출",
+                  "description": "",
+                  "status": 1,
+                  "create_user_uuid": "0x4E93587B95E24DC1B59DF34C5509D7F3"
+                }
+              ]'
               variant="filled"
             />
             <MuteButton variant="contained" onClick={this.handleButtonClick}>예외 입력(모달 발생 버튼)</MuteButton>
