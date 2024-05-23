@@ -229,20 +229,21 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               </Box>
             </Box>
 
-            <Box sx={{ margin: '5px', width: '100%', height: '100%', overflowX: 'auto', overflowY: 'scroll'}}>
+            <Box sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
               <div className="calendar-container">
-                <div className="calendar-scroll">
-                  <FullCalendar
-                    ref={this.calendarRef}
-                    plugins={[dayGridPlugin, interactionPlugin]}
-                    initialView="dayGridMonth"
-                    headerToolbar={false}
-                    selectable={true}
-                    select={this.handleDateSelect}
-                    // height="100%"
-                    events={this.state.calenderEvents}
-                  />
-                </div>
+                
+                  <div className="calendar-scale">
+                    <FullCalendar
+                      ref={this.calendarRef}
+                      plugins={[dayGridPlugin, interactionPlugin]}
+                      initialView="dayGridMonth"
+                      headerToolbar={false}
+                      selectable={true}
+                      select={this.handleDateSelect}
+                      height="100%"
+                      events={this.state.calenderEvents}
+                    />
+                  </div>                  
               </div>              
             </Box>
           </Box>

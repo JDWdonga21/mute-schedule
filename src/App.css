@@ -40,14 +40,20 @@
 .calendar-container {
   width: 100%;
   height: 100%;
-  /* overflow: hidden; 스크롤바를 숨김 */
+  position: relative;
+  overflow: hidden;
 }
 
 .calendar-scroll {
-  width: 65vw + 17px; /* 스크롤바 넓이만큼 넓게 설정 */
+  width: 100%;
   height: 100%;
-  /* overflow-y: scroll; */
-  /* overflow-y: hidden; */
-  padding-right: 17px; /* 스크롤바 넓이만큼 패딩 추가 */
-  box-sizing: content-box; /* 패딩을 포함한 크기 계산 */
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+.calendar-scale {
+  width: 100%;
+  height: 100%;
+  transform: scale(0.95); /* 원하는 크기로 조정 */
+  border: #282c34 1px solid;
 }
