@@ -114,11 +114,11 @@ class App extends React.Component<{}, AppState> {
 
   // 버튼 클릭 핸들러
   handleButtonClick = () => {
-    if (this.validateJson(this.state.jsonInput)) {
-      // this.setState({ isModalVisible: true });
+    const validatedArray = this.validateJson(this.state.jsonInput);
+    if (validatedArray) {
+      this.setState({ jsonArray: validatedArray });
       this.handleOpenModal();
     } else {
-      // message.error('Invalid JSON Array');
       alert('Invalid JSON Array');
     }
   };
@@ -212,17 +212,8 @@ class App extends React.Component<{}, AppState> {
             }}>
               {/* 모달 설정 좌측 캘린더, 우측 리스트 */}
               {this.state.isModalOpenL && (
-                <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} isModalOpenR={this.state.isModalOpenR} onOpenR={this.handleOpenModalR} onCloseR={this.handleCloseModalR} events={sampleData} />
-              )}              
-              {/* 모달 설정 우측 리스트 */}
-              {/* {this.state.isModalOpenR &&(
-                <EventModal
-                open={this.state.isModalOpenR}
-                onClose={this.handleCloseModalR}
-                events={sampleData}
-                selectedDate={new Date()} // 예제에서는 단순히 현재 날짜를 전달합니다.
-              />
-              )}               */}
+                <CalendarModal open={this.state.isModalOpenL} onClose={this.handleCloseModalL} isModalOpenR={this.state.isModalOpenR} onOpenR={this.handleOpenModalR} onCloseR={this.handleCloseModalR} events={this.state.jsonArray} />
+              )}                          
             </Box>
           </Modal>
         </div>
