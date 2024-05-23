@@ -13,6 +13,7 @@ import Card from '@mui/material/Card';
 import {toast} from "react-toastify";
 import {ReactToastifyOptions} from "../constants/ReactToastifyOptions";
 import { relative } from 'path';
+import './CalendarModal.css'
 
 // 플러그인 등록
 dayjs.extend(isSameOrBefore);
@@ -256,7 +257,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 left: '85%', 
                 transform: 'translate(-50%, -50%)', 
                 width: 400, 
-                height: 400, // Set a fixed height for the modal to enable scrolling
+                height: '50vh', // Set a fixed height for the modal to enable scrolling
                 bgcolor: 'background.paper', 
                 p: 2, 
                 overflow: 'hidden', // Hide overflow on the modal box itself
