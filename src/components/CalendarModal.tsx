@@ -1,5 +1,7 @@
 import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { Box, Button, Modal, AppBar, Toolbar, Typography, createTheme, ThemeProvider, CardContent } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FullCalendar from '@fullcalendar/react';
@@ -9,28 +11,21 @@ import { addMonths, subMonths, format } from 'date-fns';
 import { Event } from './types'; // 이벤트 타입 정의가 포함된 파일
 import Card from '@mui/material/Card';
 
+// 플러그인 등록
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
 interface CalendarEvents {
-    // id: number;
-    // created_at: string;
-    // updated_at: string;
-    // user_uuid: string;
-    // type: string;
-    // start_date: string;
-    // end_date: string | null;
-    // reason: string;
-    // description: string;
-    // status: number;
-    // create_user_uuid: string;
     title: string;
     start: string;
-    end: string | null;
+    end?: string;
 }
 
 interface DateCalendarReferenceDateState {
   referenceDate: Dayjs;
   displayedMonth: Dayjs;
   selectedDate: Dayjs;
-  events: CalendarEvents[];
+  calenderEvents: CalendarEvents[];
 }
 
 interface DateCalendarProps {
@@ -39,9 +34,7 @@ interface DateCalendarProps {
   isModalOpenR: boolean;
   onOpenR: () => void;
   onCloseR: () => void;
-  events: Event[];
-
-  
+  events: Event[];  
 }
 
 // Augment the palette to include a salmon color
@@ -82,8 +75,22 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
       referenceDate: dayjs(),
       displayedMonth: dayjs(),
       selectedDate: dayjs(),
-      events: []
+      calenderEvents: this.convertEventsToCalendarEvents(props.events),
     };
+  }
+
+  componentDidUpdate(prevProps: DateCalendarProps) {
+    if (prevProps.events !== this.props.events) {
+      this.setState({ calenderEvents: this.convertEventsToCalendarEvents(this.props.events) });
+    }
+  }
+
+  convertEventsToCalendarEvents(events: Event[]): CalendarEvents[] {
+    return events.map(event => ({
+      title: event.reason,
+      start: event.start_date,
+      end: event.end_date || undefined
+    }));
   }
 
   handlePrevMonth = () => {
@@ -119,23 +126,21 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     alert(`Selected date: ${selectInfo.startStr}`);
   };
 
-  // 선택된 날짜에 해당하는 이벤트 필터링
-  // getFilteredEvents = () => {
-  //   const { events } = this.props;
-  //   const {selectedDate} = this.state;
-  //   if(selectedDate === null){
-  //     return []
-  //   }
-  //   return events.filter(event => {
-  //     const startDate = new Date(event.start_date);
-  //     const endDate = event.end_date ? new Date(event.end_date) : new Date(event.start_date);
-  //     return startDate <= selectedDate && selectedDate <= endDate;
-  //   });
-  // }
+  //선택된 날짜에 해당하는 이벤트 필터링
+  getFilteredEvents = (): Event[] => {
+    const { events } = this.props;
+    const { selectedDate } = this.state;
+    return events.filter(event => {
+      const startDate = dayjs(event.start_date);
+      const endDate = event.end_date ? dayjs(event.end_date) : dayjs(event.start_date);
+      return startDate.isSameOrBefore(selectedDate) && endDate.isSameOrAfter(selectedDate);
+    });
+  }
+
   render() {
     const { referenceDate, displayedMonth, selectedDate } = this.state;
     const { open, onClose, onCloseR } = this.props;
-    const filteredEvents = this.props.events;
+    const filteredEvents = this.getFilteredEvents();
     return (
         <Modal
             open={open}
@@ -219,16 +224,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 selectable={true}
                 select={this.handleDateSelect}
                 height="100%"
-                events={[
-                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
-                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
-                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
-                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
-                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
-                  { title: 'Long Event', start: '2024-05-07', end: '2024-05-10' },
-                  { title: 'Some Event', start: '2024-05-09' },
-                  // Add more events here
-                ]}
+                events={this.state.calenderEvents}
               />
             </Box>
           </Box>

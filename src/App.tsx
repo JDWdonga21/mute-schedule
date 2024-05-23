@@ -4,9 +4,10 @@ import './App.css';
 // components, modals
 import Header from './components/Header';
 import CalendarModal from './components/CalendarModal';
-import EventModal from './components/EventModal';
+// import EventModal from './components/EventModal';
 
 // 데이터
+import { Event } from './components/types';
 import sampleData from './data/data.json';
 
 // mui
@@ -17,6 +18,7 @@ import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { purple } from '@mui/material/colors';
+import { Alarm } from '@mui/icons-material';
 
 const MuteButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -32,6 +34,8 @@ const MuteButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 type AppState = {
+  jsonInput: string;
+  jsonArray: Event[];
   isModalOpenL: boolean;
   isModalOpenR: boolean;
   isdarkTheme: boolean;
@@ -41,6 +45,8 @@ class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
+      jsonInput: '',
+      jsonArray: [],
       isModalOpenL: false,
       isModalOpenR: false,
       isdarkTheme: false,
@@ -71,6 +77,54 @@ class App extends React.Component<{}, AppState> {
     this.setState({ 
       isModalOpenR: false,
     });
+  };
+
+  // JSON validation 함수
+  validateJson = (jsonString: string): Event[] | null => {
+    try {
+      const parsedArray = JSON.parse(jsonString);
+      if (Array.isArray(parsedArray)) {
+        // 추가적인 타입 체크
+        for (const item of parsedArray) {
+          if (
+            typeof item.id !== 'number' ||
+            typeof item.created_at !== 'string' ||
+            typeof item.updated_at !== 'string' ||
+            typeof item.user_uuid !== 'string' ||
+            typeof item.type !== 'string' ||
+            typeof item.start_date !== 'string' ||
+            (typeof item.end_date !== 'string' && item.end_date !== null) ||
+            typeof item.reason !== 'string' ||
+            typeof item.description !== 'string' ||
+            typeof item.status !== 'number' ||
+            typeof item.create_user_uuid !== 'string'
+          ) {
+            return null;
+          }
+        }
+        console.log(sampleData);
+        console.log(parsedArray);
+        return parsedArray;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  // 버튼 클릭 핸들러
+  handleButtonClick = () => {
+    if (this.validateJson(this.state.jsonInput)) {
+      // this.setState({ isModalVisible: true });
+      this.handleOpenModal();
+    } else {
+      // message.error('Invalid JSON Array');
+      alert('Invalid JSON Array');
+    }
+  };
+
+  handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ jsonInput: e.target.value });
   };
 
   render(): React.ReactNode {
@@ -107,6 +161,8 @@ class App extends React.Component<{}, AppState> {
               multiline
               rows={15}
               fullWidth
+              value={this.state.jsonInput}
+              onChange={this.handleInputChange}
               placeholder='{
                 "id": 109,
                 "created_at": "2024-05-21 07:34:09",
@@ -122,7 +178,7 @@ class App extends React.Component<{}, AppState> {
               }'
               variant="filled"
             />
-            <MuteButton variant="contained" onClick={this.handleOpenModal}>예외 입력(모달 발생 버튼)</MuteButton>
+            <MuteButton variant="contained" onClick={this.handleButtonClick}>예외 입력(모달 발생 버튼)</MuteButton>
           </Box>
         </div>
 
