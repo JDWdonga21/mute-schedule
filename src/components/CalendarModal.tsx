@@ -10,6 +10,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { addMonths, subMonths, format } from 'date-fns';
 import { Event } from './types'; // 이벤트 타입 정의가 포함된 파일
 import Card from '@mui/material/Card';
+import {toast} from "react-toastify";
+import {ReactToastifyOptions} from "../constants/ReactToastifyOptions";
+import { relative } from 'path';
 
 // 플러그인 등록
 dayjs.extend(isSameOrBefore);
@@ -121,6 +124,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     this.setState({ displayedMonth: today, referenceDate: today, selectedDate: today });
     const calendarApi = this.calendarRef.current?.getApi();
     calendarApi?.today();
+    toast.success(`오늘 날짜 : ${format(today.toDate(), 'yyyy-MM-dd')}`, ReactToastifyOptions);
   };
 
   handleDateSelect = (selectInfo: any) => {
@@ -128,7 +132,8 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     if(!this.props.isModalOpenR){
       this.props.onOpenR();
     }
-    alert(`Selected date: ${selectInfo.startStr}`);
+    // alert(`Selected date: ${selectInfo.startStr}`);
+    toast.success(`선택한 날짜 : ${selectInfo.startStr}`, ReactToastifyOptions);
   };
 
   getFilteredEvents = (): Event[] => {
@@ -163,15 +168,16 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               top: '50%',
               left: '35%',
               transform: 'translate(-50%, -50%)',
-              width: '60vw',
-              height: '60vh',
+              width: '65vw',
+              height: '75vh',
               bgcolor: 'background.paper',
               boxShadow: 24,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               zIndex: 1,
-              borderRadius: 10,
+              borderRadius: 5,
+              padding: '12px',
             }}
           >
             <AppBar
@@ -188,6 +194,8 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 top: 0,
                 left: 0,
                 display: 'flex',
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
               }}
             >
               <Toolbar>
@@ -221,17 +229,21 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               </Box>
             </Box>
 
-            <Box sx={{ width: '100%', height: '75vh' }}>
-              <FullCalendar
-                ref={this.calendarRef}
-                plugins={[dayGridPlugin, interactionPlugin]}
-                initialView="dayGridMonth"
-                headerToolbar={false}
-                selectable={true}
-                select={this.handleDateSelect}
-                height="100%"
-                events={this.state.calenderEvents}
-              />
+            <Box sx={{ margin: '5px', width: '100%', height: '100%', overflowX: 'auto', overflowY: 'scroll'}}>
+              <div className="calendar-container">
+                <div className="calendar-scroll">
+                  <FullCalendar
+                    ref={this.calendarRef}
+                    plugins={[dayGridPlugin, interactionPlugin]}
+                    initialView="dayGridMonth"
+                    headerToolbar={false}
+                    selectable={true}
+                    select={this.handleDateSelect}
+                    // height="100%"
+                    events={this.state.calenderEvents}
+                  />
+                </div>
+              </div>              
             </Box>
           </Box>
           {/* 이동한 이벤트 리스트 */}
@@ -249,7 +261,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 overflow: 'hidden', // Hide overflow on the modal box itself
                 display: 'flex',
                 flexDirection: 'column',
-                borderRadius: 10,
+                borderRadius: 3,
             }}
           >
             <AppBar

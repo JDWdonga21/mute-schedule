@@ -18,7 +18,10 @@ import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { purple } from '@mui/material/colors';
-import { Alarm } from '@mui/icons-material';
+import {toast} from "react-toastify";
+import { ToastContainer } from 'react-toastify';
+import {ReactToastifyOptions} from "./constants/ReactToastifyOptions";
+import 'react-toastify/dist/ReactToastify.css';
 
 const MuteButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -119,7 +122,8 @@ class App extends React.Component<{}, AppState> {
       this.setState({ jsonArray: validatedArray });
       this.handleOpenModal();
     } else {
-      alert('Invalid JSON Array');
+      // alert('Invalid JSON Array');
+      toast.error('Invalid JSON Array(잘못된 JSON 배열)', ReactToastifyOptions);
     }
   };
 
@@ -219,6 +223,8 @@ class App extends React.Component<{}, AppState> {
             </Box>
           </Modal>
         </div>
+        {/* 토스트 */}
+        <ToastContainer />
       </Container>
     );
   }
