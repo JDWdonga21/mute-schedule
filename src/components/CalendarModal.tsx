@@ -171,6 +171,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               flexDirection: 'column',
               alignItems: 'center',
               zIndex: 1,
+              borderRadius: 10,
             }}
           >
             <AppBar
@@ -247,7 +248,8 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 p: 2, 
                 overflow: 'hidden', // Hide overflow on the modal box itself
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                borderRadius: 10,
             }}
           >
             <AppBar
