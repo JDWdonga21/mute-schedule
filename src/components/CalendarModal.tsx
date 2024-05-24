@@ -12,7 +12,6 @@ import { Event } from './types'; // 이벤트 타입 정의가 포함된 파일
 import Card from '@mui/material/Card';
 import {toast} from "react-toastify";
 import {ReactToastifyOptions} from "../constants/ReactToastifyOptions";
-import { relative } from 'path';
 import './CalendarModal.css'
 
 // 플러그인 등록
@@ -26,7 +25,7 @@ interface CalendarEvents {
 }
 
 interface DateCalendarReferenceDateState {
-  referenceDate: Dayjs;
+  // referenceDate: Dayjs;
   displayedMonth: Dayjs;
   selectedDate: Dayjs;
   calenderEvents: CalendarEvents[];
@@ -76,7 +75,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
   constructor(props: DateCalendarProps) {
     super(props);
     this.state = {
-      referenceDate: dayjs(),
+      // referenceDate: dayjs(),
       displayedMonth: dayjs(),
       selectedDate: dayjs(),
       calenderEvents: this.convertEventsToCalendarEvents(props.events),
@@ -102,7 +101,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
   handlePrevMonth = () => {
     this.setState((prevState) => ({
       displayedMonth: dayjs(subMonths(prevState.displayedMonth.toDate(), 1)),
-      referenceDate: dayjs(subMonths(prevState.referenceDate.toDate(), 1)),
+      // referenceDate: dayjs(subMonths(prevState.referenceDate.toDate(), 1)),
     }));
     const calendarApi = this.calendarRef.current?.getApi();
     calendarApi?.prev();
@@ -111,7 +110,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
   handleNextMonth = () => {
     this.setState((prevState) => ({
       displayedMonth: dayjs(addMonths(prevState.displayedMonth.toDate(), 1)),
-      referenceDate: dayjs(addMonths(prevState.referenceDate.toDate(), 1)),
+      // referenceDate: dayjs(addMonths(prevState.referenceDate.toDate(), 1)),
     }));
     const calendarApi = this.calendarRef.current?.getApi();
     calendarApi?.next();
@@ -122,7 +121,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     if(!this.props.isModalOpenR){
       this.props.onOpenR();
     }
-    this.setState({ displayedMonth: today, referenceDate: today, selectedDate: today });
+    this.setState({ displayedMonth: today, selectedDate: today });
     const calendarApi = this.calendarRef.current?.getApi();
     calendarApi?.today();
     toast.success(`오늘 날짜 : ${format(today.toDate(), 'yyyy-MM-dd')}`, ReactToastifyOptions);
@@ -154,7 +153,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
   
 
   render() {
-    const { referenceDate, displayedMonth, selectedDate } = this.state;
+    const { displayedMonth, selectedDate } = this.state;
     const { open, onClose, onCloseR } = this.props;
     const filteredEvents = this.getFilteredEvents();
     return (

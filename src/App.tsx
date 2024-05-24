@@ -18,6 +18,8 @@ import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { purple } from '@mui/material/colors';
+
+//React-Toastify
 import {toast} from "react-toastify";
 import { ToastContainer } from 'react-toastify';
 import {ReactToastifyOptions} from "./constants/ReactToastifyOptions";
@@ -126,7 +128,7 @@ class App extends React.Component<{}, AppState> {
       toast.error('Invalid JSON Array(잘못된 JSON 배열)', ReactToastifyOptions);
     }
   };
-
+  //TextField 내용 입력 핸들러
   handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ jsonInput: e.target.value });
   };
