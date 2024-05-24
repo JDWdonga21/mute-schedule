@@ -85,29 +85,110 @@ class App extends React.Component<{}, AppState> {
   };
 
   // JSON validation 함수
+  // validateJson = (jsonString: string): Event[] | null => {
+  //   try {
+  //     const parsedArray = JSON.parse(jsonString);
+  //     if (Array.isArray(parsedArray)) {
+  //       // 추가적인 타입 체크
+  //       for (const item of parsedArray) {
+  //         if (
+  //           typeof item.id !== 'number' ||
+  //           isNaN(Date.parse(item.created_at)) ||
+  //           isNaN(Date.parse(item.updated_at)) ||
+  //           typeof item.user_uuid !== 'string' ||
+  //           typeof item.type !== 'string' ||
+  //           isNaN(Date.parse(item.start_date)) ||
+  //           (item.end_date !== null && isNaN(Date.parse(item.end_date))) ||
+  //           typeof item.reason !== 'string' ||
+  //           typeof item.description !== 'string' ||
+  //           typeof item.status !== 'number' ||
+  //           typeof item.create_user_uuid !== 'string'
+  //         ) {
+  //           return null;
+  //         }
+  //       }
+        
+  //       // 날짜 형식 변환
+  //       const convertedArray = parsedArray.map((item: any) => ({
+  //         ...item,
+  //         created_at: new Date(item.created_at),
+  //         updated_at: new Date(item.updated_at),
+  //         start_date: new Date(item.start_date),
+  //         end_date: item.end_date ? new Date(item.end_date) : null,
+  //       }));
+  
+  //       console.log(sampleData);
+  //       console.log(convertedArray);
+  //       return convertedArray;
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // };
   validateJson = (jsonString: string): Event[] | null => {
     try {
       const parsedArray = JSON.parse(jsonString);
       if (Array.isArray(parsedArray)) {
         // 추가적인 타입 체크
         for (const item of parsedArray) {
-          if (
-            typeof item.id !== 'number' ||
-            isNaN(Date.parse(item.created_at)) ||
-            isNaN(Date.parse(item.updated_at)) ||
-            typeof item.user_uuid !== 'string' ||
-            typeof item.type !== 'string' ||
-            isNaN(Date.parse(item.start_date)) ||
-            (item.end_date !== null && isNaN(Date.parse(item.end_date))) ||
-            typeof item.reason !== 'string' ||
-            typeof item.description !== 'string' ||
-            typeof item.status !== 'number' ||
-            typeof item.create_user_uuid !== 'string'
-          ) {
+          if (typeof item.id !== 'number') {
+            toast.error(`Invalid id: ${item.id}`, ReactToastifyOptions);
+            toast.error(`id는 number 타입이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (isNaN(Date.parse(item.created_at))) {
+            toast.error(`Invalid created_at: ${item.created_at}`, ReactToastifyOptions);
+            toast.error(`created_at는 유효한 날짜 형식이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (isNaN(Date.parse(item.updated_at))) {
+            toast.error(`Invalid updated_at: ${item.updated_at}`, ReactToastifyOptions);
+            toast.error(`updated_at는 유효한 날짜 형식이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (typeof item.user_uuid !== 'string') {
+            toast.error(`Invalid user_uuid: ${item.user_uuid}`, ReactToastifyOptions);
+            toast.error(`user_uuid는 string 타입이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (typeof item.type !== 'string') {
+            toast.error(`Invalid type: ${item.type}`, ReactToastifyOptions);
+            toast.error(`type은 string 타입이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (isNaN(Date.parse(item.start_date))) {
+            toast.error(`Invalid start_date: ${item.start_date}`, ReactToastifyOptions);
+            toast.error(`start_date는 유효한 날짜 형식이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (item.end_date !== null && isNaN(Date.parse(item.end_date))) {
+            toast.error(`Invalid end_date: ${item.end_date}`, ReactToastifyOptions);
+            toast.error(`end_date는 유효한 날짜 형식이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (item.reason !== null && typeof item.reason !== 'string') {
+            toast.error(`Invalid reason: ${item.reason}`, ReactToastifyOptions);
+            toast.error(`reason은 string 타입이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (item.description !== null && typeof item.description !== 'string') {
+            toast.error(`Invalid description: ${item.description}`, ReactToastifyOptions);
+            toast.error(`description은 string 타입이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (typeof item.status !== 'number') {
+            toast.error(`Invalid status: ${item.status}`, ReactToastifyOptions);
+            toast.error(`status는 number 타입이어야 합니다`, ReactToastifyOptions);
+            return null;
+          }
+          if (typeof item.create_user_uuid !== 'string') {
+            toast.error(`Invalid create_user_uuid: ${item.create_user_uuid}`, ReactToastifyOptions);
+            toast.error(`create_user_uuid는 string 타입이어야 합니다`, ReactToastifyOptions);
             return null;
           }
         }
-        
+  
         // 날짜 형식 변환
         const convertedArray = parsedArray.map((item: any) => ({
           ...item,
@@ -121,8 +202,12 @@ class App extends React.Component<{}, AppState> {
         console.log(convertedArray);
         return convertedArray;
       }
+      toast.error('잘못된 JSON 배열: 배열이 아닙니다.', ReactToastifyOptions);
       return null;
-    } catch (e) {
+    } catch (e : any) {
+      const errorSummary = e.message.split(':').slice(0, 2).join(':'); // 첫 번째와 두 번째 부분만 추출하여 요약
+      toast.error(`잘못된 JSON 배열`, ReactToastifyOptions);
+      toast.error(`${errorSummary}`, ReactToastifyOptions);
       return null;
     }
   };
@@ -136,7 +221,7 @@ class App extends React.Component<{}, AppState> {
       this.handleOpenModal();
     } else {
       // alert('Invalid JSON Array');
-      toast.error('Invalid JSON Array(잘못된 JSON 배열)', ReactToastifyOptions);
+      // toast.error('Invalid JSON Array(잘못된 JSON 배열)', ReactToastifyOptions);
     }
   };
   //TextField 내용 입력 핸들러
