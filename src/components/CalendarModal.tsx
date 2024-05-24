@@ -188,7 +188,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 width: '100%',
                 height: '7vh',
                 bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e1e1e' : '#ffffff',
-                borderBottom: '3px solid',
+                borderBottom: '1px solid',
                 justifyContent: 'center',
                 position: 'fixed',
                 top: 0,
@@ -196,6 +196,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 display: 'flex',
                 borderTopLeftRadius: 30,
                 borderTopRightRadius: 30,
+                boxShadow: 3,
               }}
             >
               <Toolbar>
@@ -222,7 +223,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                   다음
                 </Button>
               </Box>
-              <Box sx={{ marginLeft: '-10%', alignItems: 'center', justifyContent: 'end' }}>
+              <Box sx={{ marginLeft: '-10%', marginRight: '2%', alignItems: 'center', justifyContent: 'end' }}>
                 <Button variant="contained" color="salmon" onClick={this.handleToday}>
                   오늘
                 </Button>
@@ -273,12 +274,13 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                   width: '100%',
                   height: '7vh',
                   bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e1e1e' : '#ffffff',
-                  borderBottom: '3px solid',
+                  borderBottom: '1px solid',
                   justifyContent: 'center',
                   position: 'fixed',
                   top: 0,
                   left: 0,
                   display: 'flex',
+                  boxShadow: 3,
                 }}
             >
                 <Toolbar>
