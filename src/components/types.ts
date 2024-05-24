@@ -7,8 +7,8 @@ export interface Event {
   type: string;
   start_date: Date;
   end_date: Date | null;
-  reason: string;
-  description: string;
+  reason: string | null;
+  description: string| null;
   status: number;
   create_user_uuid: string;
 }

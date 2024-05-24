@@ -92,7 +92,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
   convertEventsToCalendarEvents(events: Event[]): CalendarEvents[] {
     console.log(events, "전달된 값");
     return events.map(event => ({
-      title: event.reason,
+      title: event.reason || "",
       start: event.start_date,
       end: event.end_date || undefined
     }));
