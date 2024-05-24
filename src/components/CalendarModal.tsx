@@ -316,15 +316,21 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                             </CardContent>
                         </Box>
                         <CardContent sx={{ display: 'flex', flex: 1 }}>
-                            {event.reason === "사망" ? 
-                                <Typography component="div" fontWeight={900} color="red" variant="h5">
-                                    {`${event.reason}`}
-                                </Typography>
+                          {event.reason === null ? 
+                            <Typography component="div" fontWeight={900} variant="h5">
+                              없음
+                            </Typography>
+                           :
+                            event.reason === "사망" ? 
+                              <Typography component="div" fontWeight={900} color="red" variant="h5">
+                                  {`${event.reason}`}
+                              </Typography>
                             :
-                                <Typography component="div" fontWeight={900} variant="h5">
-                                    {`${event.reason}`}
-                                </Typography>
-                            }                            
+                              <Typography component="div" fontWeight={900} variant="h5">
+                                  {`${event.reason}`}
+                              </Typography>     
+                          }
+                                                  
                         </CardContent>
                     </Card>                 
                 ))}
