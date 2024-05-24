@@ -93,12 +93,12 @@ class App extends React.Component<{}, AppState> {
         for (const item of parsedArray) {
           if (
             typeof item.id !== 'number' ||
-            typeof item.created_at !== 'string' ||
-            typeof item.updated_at !== 'string' ||
+            isNaN(Date.parse(item.created_at)) ||
+            isNaN(Date.parse(item.updated_at)) ||
             typeof item.user_uuid !== 'string' ||
             typeof item.type !== 'string' ||
-            typeof item.start_date !== 'string' ||
-            (typeof item.end_date !== 'string' && item.end_date !== null) ||
+            isNaN(Date.parse(item.start_date)) ||
+            (item.end_date !== null && isNaN(Date.parse(item.end_date))) ||
             typeof item.reason !== 'string' ||
             typeof item.description !== 'string' ||
             typeof item.status !== 'number' ||
@@ -107,15 +107,26 @@ class App extends React.Component<{}, AppState> {
             return null;
           }
         }
+        
+        // 날짜 형식 변환
+        const convertedArray = parsedArray.map((item: any) => ({
+          ...item,
+          created_at: new Date(item.created_at),
+          updated_at: new Date(item.updated_at),
+          start_date: new Date(item.start_date),
+          end_date: item.end_date ? new Date(item.end_date) : null,
+        }));
+  
         console.log(sampleData);
-        console.log(parsedArray);
-        return parsedArray;
+        console.log(convertedArray);
+        return convertedArray;
       }
       return null;
     } catch (e) {
       return null;
     }
   };
+  
 
   // 버튼 클릭 핸들러
   handleButtonClick = () => {

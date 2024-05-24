@@ -20,8 +20,8 @@ dayjs.extend(isSameOrAfter);
 
 interface CalendarEvents {
     title: string;
-    start: string;
-    end?: string;
+    start: Date;
+    end?: Date;
 }
 
 interface DateCalendarReferenceDateState {
@@ -303,9 +303,16 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                                 <Typography variant="subtitle1" fontSize={13} component="div">
                                     {"+82 1055359909"}
                                 </Typography>
-                                <Typography variant="subtitle1" fontSize={11} component="div">
-                                    {`${event.start_date} - ${event.end_date || '무기한'}`}
-                                </Typography>
+                                {event.end_date !== null ? 
+                                  <Typography variant="subtitle1" fontSize={11} component="div">
+                                    {`${format(event.start_date,'yyyy-MM-dd')} - ${format(event.end_date, 'yyyy-MM-dd')}`}
+                                  </Typography>
+                                :
+                                  <Typography variant="subtitle1" fontSize={11} component="div">
+                                    {`${format(event.start_date,'yyyy-MM-dd')} - '무기한'}`}
+                                  </Typography>
+                                }
+                                
                             </CardContent>
                         </Box>
                         <CardContent sx={{ display: 'flex', flex: 1 }}>
