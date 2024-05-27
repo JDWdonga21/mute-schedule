@@ -58,14 +58,31 @@ declare module '@mui/material/Button' {
   }
 }
 
-const theme = createTheme({
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#1976d2',
+//     },
+//     salmon: {
+//       main: '#E96200',
+//     },
+//   },
+// });
+
+let theme = createTheme({
+  // Theme customization goes here as usual, including tonalOffset and/or
+  // contrastThreshold as the augmentColor() function relies on these
+});
+
+theme = createTheme(theme, {
+  // Custom colors created with augmentColor go here
   palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    salmon: {
-      main: '#FF5733',
-    },
+    salmon: theme.palette.augmentColor({
+      color: {
+        main: '#FF5733',
+      },
+      name: 'salmon',
+    }),
   },
 });
 
@@ -176,7 +193,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               flexDirection: 'column',
               alignItems: 'center',
               zIndex: 1,
-              borderRadius: 5,
+              borderRadius: 3,
               padding: '12px',
             }}
           >
@@ -194,13 +211,13 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 top: 0,
                 left: 0,
                 display: 'flex',
-                borderTopLeftRadius: 30,
-                borderTopRightRadius: 30,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
                 boxShadow: 3,
               }}
             >
               <Toolbar>
-                <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginLeft: 2, marginTop: 1, marginBottom: 1 }}>
+                <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginLeft: 2, marginTop: 1, marginBottom: 1, fontWeight: '700' }}>
                   관제 예외일정
                 </Typography>
                 <div onClick={onClose} style={{ cursor: 'pointer' }}>
@@ -209,28 +226,34 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               </Toolbar>
             </AppBar>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '7vh', width: '100%', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '8vh', width: '100%', mb: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, justifyContent: 'center' }}>
                 <Button variant="contained" onClick={this.handlePrevMonth}>
-                  이전
+                  <Typography sx={{fontWeight : '900'}}>
+                    이전
+                  </Typography>                  
                 </Button>
 
-                <Typography variant="h6" component="div" sx={{ marginRight: 4, marginLeft: 4 }}>
+                <Typography variant="h6" component="div" sx={{ marginRight: 4, marginLeft: 4, fontWeight: '900' }}>
                   {format(displayedMonth.toDate(), 'yyyy.MM')}
                 </Typography>
 
                 <Button variant="contained" onClick={this.handleNextMonth}>
-                  다음
+                  <Typography sx={{fontWeight : '900'}}>
+                    다음
+                  </Typography>                  
                 </Button>
               </Box>
               <Box sx={{ marginLeft: '-10%', marginRight: '2%', alignItems: 'center', justifyContent: 'end' }}>
                 <Button variant="contained" color="salmon" onClick={this.handleToday}>
-                  오늘
+                  <Typography sx={{fontWeight : '900'}}>
+                    오늘
+                  </Typography>                  
                 </Button>
               </Box>
             </Box>
 
-            <Box sx={{ width: '96%', height: 'auto' }}>
+            <Box sx={{ width: '96%', height: 'auto', marginTop: '1vh', marginBottom: '1vh' }}>
             {/* <FullCalendar
                       ref={this.calendarRef}
                       plugins={[dayGridPlugin, interactionPlugin]}
@@ -251,6 +274,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                       select={this.handleDateSelect}
                       // height="50vh"
                       events={this.state.calenderEvents}
+                      eventColor='#5072A8'
                       expandRows
                       contentHeight={'auto'}
                       stickyHeaderDates
@@ -304,7 +328,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                     </div>
                 </Toolbar>
             </AppBar>
-            <Box sx={{ flexGrow: 1, overflow: 'auto', marginLeft: 1, marginRight: 1, marginTop: '7vh', width: '95%', mb: 2, paddingRight: 1 }}>
+            <Box sx={{ flexGrow: 1, overflow: 'auto', marginLeft: 1, marginRight: 1, marginTop: '8vh', marginBottom: '1vh', width: '95%', mb: 2, paddingRight: 1 }}>
                 {filteredEvents.map(event => (
                     <Card key={event.id} variant="outlined" sx={{ display: 'flex', marginBottom: 1, boxShadow: 3, alignItems: 'center'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
