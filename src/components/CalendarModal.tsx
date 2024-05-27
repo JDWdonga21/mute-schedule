@@ -25,7 +25,7 @@ interface CalendarEvents {
 }
 
 interface DateCalendarReferenceDateState {
-  // referenceDate: Dayjs;
+  referenceDate: Dayjs;
   displayedMonth: Dayjs;
   selectedDate: Dayjs;
   calenderEvents: CalendarEvents[];
@@ -40,7 +40,7 @@ interface DateCalendarProps {
   events: Event[];  
 }
 
-// Augment the palette to include a salmon color
+// 색상 팔레트에 새 색상 추가
 declare module '@mui/material/styles' {
   interface Palette {
     salmon: Palette['primary'];
@@ -92,20 +92,28 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
   constructor(props: DateCalendarProps) {
     super(props);
     this.state = {
-      // referenceDate: dayjs(),
+      referenceDate: dayjs(),
       displayedMonth: dayjs(),
       selectedDate: dayjs(),
       calenderEvents: this.convertEventsToCalendarEvents(props.events),
     };
   }
 
-  componentDidUpdate(prevProps: DateCalendarProps) {
+  componentDidUpdate(prevProps: DateCalendarProps, prevState: DateCalendarReferenceDateState) {
     if (prevProps.events !== this.props.events) {
-      console.log('Updated events:', this.props.events);
-      this.setState({ calenderEvents: this.convertEventsToCalendarEvents(this.props.events) });
+      this.setState({ calenderEvents: this.convertEventsToCalendarEvents(this.props.events) }, () => {
+        const calendarApi = this.calendarRef.current?.getApi();
+        calendarApi?.refetchEvents();
+        this.applyShadeToOtherMonthDays();
+      });
+    }
+    if (prevState.displayedMonth !== this.state.displayedMonth) {
+      const calendarApi = this.calendarRef.current?.getApi();
+      calendarApi?.gotoDate(this.state.displayedMonth.toDate());
+      this.applyShadeToOtherMonthDays();
     }
   }
-
+  
   convertEventsToCalendarEvents(events: Event[]): CalendarEvents[] {
     console.log(events, "전달된 값");
     return events.map(event => ({
@@ -166,7 +174,28 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
       ) || 
       startDate.isSame(selectedDate, 'day');
     });
-  }
+  };
+
+  applyShadeToOtherMonthDays = () => {
+    setTimeout(() => {
+      const calendarEl = document.querySelector('.fc-daygrid-body'); // 달력 본체 요소 선택
+      if (calendarEl) {
+        const dayEls = calendarEl.querySelectorAll('.fc-day');
+        dayEls.forEach(dayEl => {
+          const date = new Date(dayEl.getAttribute('data-date') || '');
+          if (date.getMonth() !== this.state.displayedMonth.month()) {
+            dayEl.classList.add('fc-day-other');
+          } else {
+            dayEl.classList.remove('fc-day-other');
+          }
+        });
+      }
+    }, 0);
+  };
+  
+  
+
+
   
 
   render() {
@@ -279,6 +308,13 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                       contentHeight={'auto'}
                       stickyHeaderDates
                       // aspectRatio = {1.8}
+                      dayMaxEventRows={true} // 이벤트가 많은 경우 최대 행 수 설정
+                      fixedWeekCount={false} // 표시되는 주의 수를 동적으로 변경
+                      dayCellDidMount={(info) => {
+                        if (info.date.getMonth() !== this.state.displayedMonth.month()) {
+                          info.el.classList.add('fc-day-other');
+                        }
+                      }}
                     />
               </div>              
             </Box>

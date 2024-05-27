@@ -71,4 +71,36 @@
     font-weight: bold; /* 텍스트 굵게 */
   }
   
+  .fc .fc-day-other {
+    background-color: rgba(0, 0, 0, 0.1); /* 음영 효과 */
+  }
+  
+  .fc .fc-daygrid-day-frame {
+    border: 1px solid #000; 
+  }
+  
+  .fc .fc-daygrid-day-top {
+    border-bottom: 1px solid #000;
+  }
+  
+  .fc .fc-daygrid-day.fc-day-selected {
+    background-color: rgba(0, 123, 255, 0.892) !important;
+    border: 2px solid #007bff !important;
+  }
+  
+  .fc .fc-daygrid-day.fc-day-selected .fc-daygrid-day-top {
+    color: #fff !important;
+  }
+  
+  .fc .fc-daygrid-day.fc-day-selected .fc-daygrid-day-events {
+    background-color: rgba(0, 123, 255, 0.1) !important;
+  }
+  
+  .fc .fc-col-header-cell {
+    border: 1px solid #000;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+  }
+  
+  
   
