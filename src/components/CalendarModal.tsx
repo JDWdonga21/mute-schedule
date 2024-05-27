@@ -296,7 +296,7 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                 }}
             >
                 <Toolbar>
-                    <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginLeft: 1, marginTop: 1, marginBottom: 1, fontSize: 22 }}>
+                    <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginTop: 1, marginBottom: 1, fontSize: 22 }}>
                         {format(selectedDate.toDate(), 'yyyy.MM.dd')}
                     </Typography>
                     <div onClick={onCloseR} style={{ cursor: 'pointer' }}>
@@ -304,9 +304,9 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                     </div>
                 </Toolbar>
             </AppBar>
-            <Box sx={{ flexGrow: 1, overflow: 'auto', marginLeft: 1, marginRight: 3, marginTop: '7vh', width: '100%', mb: 2, paddingRight: 1 }}>
+            <Box sx={{ flexGrow: 1, overflow: 'auto', marginLeft: 1, marginRight: 1, marginTop: '7vh', width: '95%', mb: 2, paddingRight: 1 }}>
                 {filteredEvents.map(event => (
-                    <Card key={event.id} variant="outlined" sx={{ display: 'flex', marginBottom: 1, marginLeft: 1,marginRight: 1, boxShadow: 3, alignItems: 'center'}}>
+                    <Card key={event.id} variant="outlined" sx={{ display: 'flex', marginBottom: 1, boxShadow: 3, alignItems: 'center'}}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
                             <CardContent sx={{flex: '1 0 auto' }}>
                                 <Typography component="div" fontWeight={900} fontSize={15} sx={{maxWidth: 150}}>
