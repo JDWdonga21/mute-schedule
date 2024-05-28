@@ -96,7 +96,7 @@ class EventModal extends Component<EventModalProps, EventModalState> {
                                   </Typography>
                                 :
                                   <Typography variant="subtitle1" fontSize={11} component="div">
-                                    {`${format(event.start_date,'yyyy-MM-dd')} - '무기한'}`}
+                                    {`${format(event.start_date,'yyyy-MM-dd')} - 무기한`}
                                   </Typography>
                                 }
                                 
