@@ -72,7 +72,7 @@ class EventModal extends Component<EventModalProps, EventModalState> {
             >
                 <Toolbar>
                     <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginTop: 1, marginBottom: 1, fontSize: 22 }}>
-                        {format(selectedDate.toDate(), 'yyyy.MM.dd')}
+                        {format(selectedDate.toDate(), 'yyyy-MM-dd')}
                     </Typography>
                     <div onClick={onCloseR} style={{ cursor: 'pointer' }}>
                         <CloseIcon />
