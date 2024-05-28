@@ -2,17 +2,18 @@ import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { Box, Button, Modal, AppBar, Toolbar, Typography, createTheme, ThemeProvider, CardContent } from '@mui/material';
+import { Box, Button, Modal, AppBar, Toolbar, Typography, createTheme, ThemeProvider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { addMonths, subMonths, format } from 'date-fns';
 import { Event } from './types'; // 이벤트 타입 정의가 포함된 파일
-import Card from '@mui/material/Card';
 import {toast} from "react-toastify";
 import {ReactToastifyOptions} from "../constants/ReactToastifyOptions";
 import './CalendarModal.css'
+
+import EventModal from './EventModal';
 
 // 플러그인 등록
 dayjs.extend(isSameOrBefore);
@@ -51,31 +52,20 @@ declare module '@mui/material/styles' {
   }
 }
 
-// Update the Button's color options to include a salmon option
+// salmon 옵션을 포함하도록 버튼 색상 옵션 업데이트
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     salmon: true;
   }
 }
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#1976d2',
-//     },
-//     salmon: {
-//       main: '#E96200',
-//     },
-//   },
-// });
-
 let theme = createTheme({
-  // Theme customization goes here as usual, including tonalOffset and/or
-  // contrastThreshold as the augmentColor() function relies on these
+  // tonalOffset 및/또는을 포함하여 평소와 같이 테마 사용자 정의가 여기에 적용됩니다.
+  // AugmentColor() 함수인 ContrastThreshold는 다음을 사용합니다.
 });
 
 theme = createTheme(theme, {
-  // Custom colors created with augmentColor go here
+  // AugmentColor로 생성된 사용자 정의 색상은 여기로 이동하세요.
   palette: {
     salmon: theme.palette.augmentColor({
       color: {
@@ -161,21 +151,6 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
     toast.success(`선택한 날짜 : ${selectInfo.startStr}`, ReactToastifyOptions);
   };
 
-  getFilteredEvents = (): Event[] => {
-    const { events } = this.props;
-    const { selectedDate } = this.state;
-    return events.filter(event => {
-      const startDate = dayjs(event.start_date);
-      const endDate = event.end_date ? dayjs(event.end_date) : startDate;
-  
-      return (
-        startDate.isSameOrBefore(selectedDate, 'day') && 
-        endDate.isSameOrAfter(selectedDate, 'day')
-      ) || 
-      startDate.isSame(selectedDate, 'day');
-    });
-  };
-
   applyShadeToOtherMonthDays = () => {
     setTimeout(() => {
       const calendarEl = document.querySelector('.fc-daygrid-body'); // 달력 본체 요소 선택
@@ -199,9 +174,8 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
   
 
   render() {
-    const { displayedMonth, selectedDate } = this.state;
-    const { open, onClose, onCloseR } = this.props;
-    const filteredEvents = this.getFilteredEvents();
+    const { displayedMonth } = this.state;
+    const { open, onClose } = this.props;
     return (
         <Modal
             open={open}
@@ -215,7 +189,6 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
               left: '35%',
               transform: 'translate(-50%, -50%)',
               width: '65vw',
-              // height: '75vh',
               bgcolor: 'background.paper',
               boxShadow: 24,
               display: 'flex',
@@ -283,16 +256,6 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
             </Box>
 
             <Box sx={{ width: '96%', height: 'auto', marginTop: '1vh', marginBottom: '1vh' }}>
-            {/* <FullCalendar
-                      ref={this.calendarRef}
-                      plugins={[dayGridPlugin, interactionPlugin]}
-                      initialView="dayGridMonth"
-                      headerToolbar={false}
-                      selectable={true}
-                      select={this.handleDateSelect}
-                      height="100%"
-                      events={this.state.calenderEvents}
-                    /> */}
               <div className="calendar-scale">
                     <FullCalendar
                       ref={this.calendarRef}
@@ -301,13 +264,11 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
                       headerToolbar={false}
                       selectable={true}
                       select={this.handleDateSelect}
-                      // height="50vh"
                       events={this.state.calenderEvents}
                       eventColor='#5072A8'
                       expandRows
                       contentHeight={'auto'}
                       stickyHeaderDates
-                      // aspectRatio = {1.8}
                       dayMaxEventRows={true} // 이벤트가 많은 경우 최대 행 수 설정
                       fixedWeekCount={false} // 표시되는 주의 수를 동적으로 변경
                       dayCellDidMount={(info) => {
@@ -321,94 +282,94 @@ class DateCalendarReferenceDate extends React.Component<DateCalendarProps, DateC
           </Box>
           {/* 이동한 이벤트 리스트 */}
           {this.props.isModalOpenR && (
-            <Box 
-            sx={{ 
-                position: 'absolute', 
-                top: '50%', 
-                left: '85%', 
-                transform: 'translate(-50%, -50%)', 
-                width: 400, 
-                height: '70vh', // Set a fixed height for the modal to enable scrolling
-                bgcolor: 'background.paper', 
-                p: 2, 
-                overflow: 'hidden', // Hide overflow on the modal box itself
-                display: 'flex',
-                flexDirection: 'column',
-                borderRadius: 3,
-            }}
-          >
-            <AppBar
-                position="static"
-                color="default"
-                elevation={0}
-                sx={{
-                  width: '100%',
-                  height: '7vh',
-                  bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e1e1e' : '#ffffff',
-                  borderBottom: '1px solid',
-                  justifyContent: 'center',
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  display: 'flex',
-                  boxShadow: 3,
-                  
-                }}
-            >
-                <Toolbar>
-                    <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginTop: 1, marginBottom: 1, fontSize: 22 }}>
-                        {format(selectedDate.toDate(), 'yyyy.MM.dd')}
-                    </Typography>
-                    <div onClick={onCloseR} style={{ cursor: 'pointer' }}>
-                        <CloseIcon />
-                    </div>
-                </Toolbar>
-            </AppBar>
-            <Box sx={{ flexGrow: 1, overflow: 'auto', marginLeft: 1, marginRight: 1, marginTop: '8vh', marginBottom: '1vh', width: '95%', mb: 2, paddingRight: 1 }}>
-                {filteredEvents.map(event => (
-                    <Card key={event.id} variant="outlined" sx={{ display: 'flex', marginBottom: 1, boxShadow: 3, alignItems: 'center'}}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
-                            <CardContent sx={{flex: '1 0 auto' }}>
-                                <Typography component="div" fontWeight={900} fontSize={15} sx={{maxWidth: 150}}>
-                                    {`${event.user_uuid}`}
-                                </Typography>
-                                <Typography variant="subtitle1" fontSize={13} component="div">
-                                    {"+82 1055359909"}
-                                </Typography>
-                                {event.end_date !== null ? 
-                                  <Typography variant="subtitle1" fontSize={11} component="div">
-                                    {`${format(event.start_date,'yyyy-MM-dd')} - ${format(event.end_date, 'yyyy-MM-dd')}`}
-                                  </Typography>
-                                :
-                                  <Typography variant="subtitle1" fontSize={11} component="div">
-                                    {`${format(event.start_date,'yyyy-MM-dd')} - '무기한'}`}
-                                  </Typography>
-                                }
+            <EventModal onCloseR={this.props.onCloseR} events={this.props.events} selectedDate={this.state.selectedDate}   />
+          //   <Box 
+          //   sx={{ 
+          //       position: 'absolute', 
+          //       top: '50%', 
+          //       left: '85%', 
+          //       transform: 'translate(-50%, -50%)', 
+          //       width: 400, 
+          //       height: '70vh', // 스크롤을 활성화하려면 모달의 고정 높이를 설정하세요.
+          //       bgcolor: 'background.paper', 
+          //       p: 2, 
+          //       overflow: 'hidden', // 모달 상자 자체에서 오버플로 숨기기
+          //       display: 'flex',
+          //       flexDirection: 'column',
+          //       borderRadius: 3,
+          //   }}
+          // >
+          //   <AppBar
+          //       position="static"
+          //       color="default"
+          //       elevation={0}
+          //       sx={{
+          //         width: '100%',
+          //         height: '7vh',
+          //         bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e1e1e' : '#ffffff',
+          //         borderBottom: '1px solid',
+          //         justifyContent: 'center',
+          //         position: 'fixed',
+          //         top: 0,
+          //         left: 0,
+          //         display: 'flex',
+          //         boxShadow: 3,                  
+          //       }}
+          //   >
+          //       <Toolbar>
+          //           <Typography fontWeight={900} variant="h6" component="h2" gutterBottom sx={{ flexGrow: 1, marginTop: 1, marginBottom: 1, fontSize: 22 }}>
+          //               {format(selectedDate.toDate(), 'yyyy.MM.dd')}
+          //           </Typography>
+          //           <div onClick={onCloseR} style={{ cursor: 'pointer' }}>
+          //               <CloseIcon />
+          //           </div>
+          //       </Toolbar>
+          //   </AppBar>
+          //   <Box sx={{ flexGrow: 1, overflow: 'auto', marginLeft: 1, marginRight: 1, marginTop: '8vh', marginBottom: '1vh', width: '95%', mb: 2, paddingRight: 1 }}>
+          //       {filteredEvents.map(event => (
+          //           <Card key={event.id} variant="outlined" sx={{ display: 'flex', marginBottom: 1, boxShadow: 3, alignItems: 'center'}}>
+          //               <Box sx={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
+          //                   <CardContent sx={{flex: '1 0 auto' }}>
+          //                       <Typography component="div" fontWeight={900} fontSize={15} sx={{maxWidth: 150}}>
+          //                           {`${event.user_uuid}`}
+          //                       </Typography>
+          //                       <Typography variant="subtitle1" fontSize={13} component="div">
+          //                           {"+82 1055359909"}
+          //                       </Typography>
+          //                       {event.end_date !== null ? 
+          //                         <Typography variant="subtitle1" fontSize={11} component="div">
+          //                           {`${format(event.start_date,'yyyy-MM-dd')} - ${format(event.end_date, 'yyyy-MM-dd')}`}
+          //                         </Typography>
+          //                       :
+          //                         <Typography variant="subtitle1" fontSize={11} component="div">
+          //                           {`${format(event.start_date,'yyyy-MM-dd')} - '무기한'}`}
+          //                         </Typography>
+          //                       }
                                 
-                            </CardContent>
-                        </Box>
-                        <CardContent sx={{ display: 'flex', flex: 1 }}>
-                          {event.reason === null ? 
-                            <Typography component="div" fontWeight={900} variant="h5">
-                              없음
-                            </Typography>
-                           :
-                            event.reason === "사망" ? 
-                              <Typography component="div" fontWeight={900} color="red" variant="h5">
-                                  {`${event.reason}`}
-                              </Typography>
-                            :
-                              <Typography component="div" fontWeight={900} variant="h5">
-                                  {`${event.reason}`}
-                              </Typography>     
-                          }
+          //                   </CardContent>
+          //               </Box>
+          //               <CardContent sx={{ display: 'flex', flex: 1 }}>
+          //                 {event.reason === null ? 
+          //                   <Typography component="div" fontWeight={900} variant="h5">
+          //                     없음
+          //                   </Typography>
+          //                  :
+          //                   event.reason === "사망" ? 
+          //                     <Typography component="div" fontWeight={900} color="red" variant="h5">
+          //                         {`${event.reason}`}
+          //                     </Typography>
+          //                   :
+          //                     <Typography component="div" fontWeight={900} variant="h5">
+          //                         {`${event.reason}`}
+          //                     </Typography>     
+          //                 }
                                                   
-                        </CardContent>
-                    </Card>                 
-                ))}
+          //               </CardContent>
+          //           </Card>                 
+          //       ))}
                 
-            </Box>
-          </Box>
+          //   </Box>
+          // </Box>
           )}
         </ThemeProvider>
       </Modal>

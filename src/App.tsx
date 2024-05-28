@@ -4,7 +4,6 @@ import './App.css';
 // components, modals
 import Header from './components/Header';
 import CalendarModal from './components/CalendarModal';
-// import EventModal from './components/EventModal';
 
 // 데이터
 import { Event } from './components/types';
